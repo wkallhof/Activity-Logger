@@ -78,6 +78,8 @@
       <DependentUpon>frmOptions.cs</DependentUpon>
     </Compile>
     <Compile Include="Hook.cs" />
+    <Compile Include="Loggers\Concrete\XmlFileLogger.cs" />
+    <Compile Include="Loggers\ILogger.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TextLogger.cs" />
