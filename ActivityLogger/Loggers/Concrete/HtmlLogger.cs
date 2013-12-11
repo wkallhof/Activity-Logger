@@ -6,8 +6,9 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using ActivityLogger.Extensions;
 
-namespace KeyLogger.Loggers.Concrete
+namespace ActivityLogger.Loggers.Concrete
 {
     class HtmlLogger : ILogger
     {
@@ -50,7 +51,7 @@ namespace KeyLogger.Loggers.Concrete
 
         private string WriteLogLine(string application, string appLog)
         {
-            return "<tr><td>"+application+"</td><td>"+appLog+"</td></tr>";
+            return "<tr><td>"+application+"</td><td>"+appLog.NewlineToBr()+"</td></tr>";
         }
     }
 }

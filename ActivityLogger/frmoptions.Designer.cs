@@ -1,4 +1,4 @@
-﻿namespace KeyLogger
+﻿namespace ActivityLogger
 {
     partial class Frmoptions
     {

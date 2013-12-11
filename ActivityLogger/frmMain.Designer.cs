@@ -1,5 +1,5 @@
 ﻿using System.Windows.Forms;
-namespace KeyLogger
+namespace ActivityLogger
 {
     partial class FrmMain
     {
@@ -97,7 +97,7 @@ namespace KeyLogger
             // 
             // buttonStop
             // 
-            this.buttonStop.Image = global::KeyLogger.Properties.Resources.DeleteRed;
+            this.buttonStop.Image = global::ActivityLogger.Properties.Resources.DeleteRed;
             this.buttonStop.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonStop.Location = new System.Drawing.Point(180, 12);
             this.buttonStop.Name = "buttonStop";
@@ -108,7 +108,7 @@ namespace KeyLogger
             // 
             // buttonStart
             // 
-            this.buttonStart.Image = global::KeyLogger.Properties.Resources.Begin;
+            this.buttonStart.Image = global::ActivityLogger.Properties.Resources.Begin;
             this.buttonStart.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.buttonStart.Location = new System.Drawing.Point(13, 12);
             this.buttonStart.Name = "buttonStart";

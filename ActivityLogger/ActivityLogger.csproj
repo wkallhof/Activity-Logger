@@ -8,8 +8,8 @@
     <ProjectGuid>{8E393055-6278-4481-AF7E-41EA6F1308B9}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KeyLogger</RootNamespace>
-    <AssemblyName>KeyLogger</AssemblyName>
+    <RootNamespace>ActivityLogger</RootNamespace>
+    <AssemblyName>ActivityLogger</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -56,7 +56,7 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>KeyLogger.Program</StartupObject>
+    <StartupObject>ActivityLogger.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="APIs.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="frmMain.cs">
       <SubType>Form</SubType>
     </Compile>

