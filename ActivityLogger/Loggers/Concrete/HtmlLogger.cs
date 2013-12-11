@@ -42,10 +42,7 @@ namespace ActivityLogger.Loggers.Concrete
 
                 var outputHtml = template.Replace("{content}", markupBuilder.ToString());
 
-                var writer = new StreamWriter(filePath, false);
-                writer.WriteLine(outputHtml);
-                writer.Flush();
-                writer.Close();
+                File.WriteAllText(filePath, outputHtml);
             }
             catch (Exception ex)
             {
@@ -56,11 +53,7 @@ namespace ActivityLogger.Loggers.Concrete
         private string FetchTemplateString()
         {
             var templatePath = Path.Combine(Application.StartupPath, "Loggers","Concrete","HtmlLogTemplate.html");
-            StreamReader sr = new StreamReader(templatePath);
-            string template = sr.ReadLine();
-            sr.Close();
-
-            return template;
+            return File.ReadAllText(templatePath);
         }
 
         private string WriteLogLine(string application, string appLog)
